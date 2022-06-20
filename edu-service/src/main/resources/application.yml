@@ -1,0 +1,98 @@
+spring:
+  # spring-boot-admin-starter-client配置
+  boot:
+    admin:
+      client:
+        url: http://localhost:8081
+
+  # 应用名称
+  application:
+    # 占位符 @..@
+    name: @artifactId@
+  # 当前环境
+#  profiles:
+#    active: dev
+
+  messages:
+    # 指定ValidationMessages.properties的文件编码
+    encoding: UTF-8
+
+#配置文件上传参数
+  servlet:
+    multipart:
+      #启用文件上传。默认支持文件上传
+      enabled: true
+      # 文件大于该阈值时，将写入磁盘，支持KB/MB单位
+      file-size-threshold: 0
+      #自定义文件上传的临时路径
+      location: /tmp/
+      # 限制上传的多个文件的总大小
+      max-request-size: 10MB
+      # 限制单个文件的最大值
+      max-file-size: 10MB
+
+#  配置springmvc
+  mvc:
+    # 出现错误时直接抛出异常，交由SpringMVC处理
+    throw-exception-if-no-handler-found: true
+    format:
+      # http数据的日期格式
+      date: yyyy-MM-dd HH:mm:ss
+  web:
+    resources:
+      # SpringMVC不要为资源建立 /** 的映射配置，否则请求都被处理就没有404
+      add-mappings: false
+
+
+  #配置数据源
+  datasource:
+    # 数据库连接参数
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/edusys?useUnicode=true&characterEncoding=UTF8&serverTimezone=GMT%2b8&userSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    # 指定数据源为druid
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      min-idle: 10
+      max-active: 20
+
+# actuator配置
+management:
+  # 暴露actuator所有端点
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  # 开启actuator的shutdown端点
+  endpoint:
+    shutdown:
+      enabled: true
+
+#mybatisPlus配置
+mybatis-plus:
+  # mapperLocations是mapper文件位置，通常放在resources中的mapper子目录里
+#  mapper-locations: classpath*:/**/*Mapper.xml
+  # 别名配置，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.orange.bean
+  configuration:
+    #开启自动驼峰映射，通常与代码生成相配合
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+    #配置JdbcTypeForNull。用于MyBatis插入空值时避免Java类型转换时出错
+    jdbc-type-for-null: 'null'
+    # 显示SQL语句
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#openapi配置
+springdoc:
+  swagger-ui:
+    # 是否允许生成swagger
+    enabled: true
+    #swagger-ui访问路径，默认http://server:port/context-path/swagger-ui.html
+    path: /swagger-ui.html
+    # 启用CSRF支持
+    csrf:
+      enabled: true
+  # 包扫描路径，默认与@SpringBootApplication相同
+  # packages-to-scan: com.xiaohong.user.controller
